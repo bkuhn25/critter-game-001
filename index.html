@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0"
     />
-    <title>Critter Game</title>
+    <title>Retention Game</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
       rel="stylesheet"
@@ -165,8 +165,8 @@
         id="startScreen"
         class="overlay"
       >
-        <h1>Critter Game</h1>
-        <p>Tap anywhere to make the critter jump!</p>
+        <h1>Retention Game</h1>
+        <p>Tap anywhere to make Kyle jump!</p>
         <p>Avoid the cacti and see how high you can score!</p>
         <div class="tap-to-start">Tap to Start</div>
       </div>
@@ -228,9 +228,6 @@
       const alpacaImg = new Image();
       alpacaImg.src = 'static/logo.png';
       let alpacaLoaded = false;
-      alpacaImg.onload = () => {
-        alpacaLoaded = true;
-      };
 
       // Game objects
       const alpaca = {
@@ -242,6 +239,22 @@
         gravity: 0.28,
         jumpPower: -5.75,
         rotation: 0,
+        naturalWidth: 60,
+        naturalHeight: 55,
+      };
+
+      alpacaImg.onload = () => {
+        alpacaLoaded = true;
+
+        // Calculate proper aspect ratio to prevent compression
+        const imageAspectRatio =
+          alpacaImg.naturalWidth / alpacaImg.naturalHeight;
+        const targetHeight = 55; // Keep this as our base size
+
+        alpaca.naturalWidth = targetHeight * imageAspectRatio;
+        alpaca.naturalHeight = targetHeight;
+        alpaca.width = alpaca.naturalWidth;
+        alpaca.height = alpaca.naturalHeight;
       };
 
       const obstacles = [];
@@ -346,10 +359,10 @@
         if (alpacaLoaded) {
           ctx.drawImage(
             alpacaImg,
-            -alpaca.width / 2,
-            -alpaca.height / 2,
-            alpaca.width,
-            alpaca.height
+            -alpaca.naturalWidth / 2,
+            -alpaca.naturalHeight / 2,
+            alpaca.naturalWidth,
+            alpaca.naturalHeight
           );
         } else {
           // Fallback alpaca
